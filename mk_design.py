@@ -2,13 +2,13 @@
 
 # Define usage
 """
-Applies pre-computed (affine) linear and non-linear transforms to 4D EP (bold) image data in parallel.
-Additional options include the ability to resample the image back to its native voxel size and/or native
-space dimensions (in the case a native space image is provided).
-This script at minimum requires that FSL be installed and added to system path.
-Image resampling options required that MIRTK be installed and added to the system path.
+
+Creates FSL compatible design matrices (as text files).
+
 Usage:
-  reg4D.py [options | expert options] [required arguments]
+
+  mk_design.py [options | expert options] [required arguments]
+
 Required arguments
     -i,--in INPUT       Input 4D file
     -o,--out PREFIX     Output prefix for transformed 4D file
@@ -51,6 +51,7 @@ Expert Options:
     -h,--help           Prints help message, then exits.
     --version           Prints version, then exits.
 NOTE: '--resamp-dim' and '--resamp-vox' options require MIRTK to be installed if these options are specified.
+
 """
 
 # Import packages/modules
@@ -383,7 +384,7 @@ def demean_col(df, col_indices=[]):
     return df_demean
 
 
-def mk_design(in_file, prefix, rm_list="", ret_list="", kp_col_list="", rm_nan=True, sep=" "):
+def mk_design(in_file, prefix, rm_list="", ret_list="", kp_col_list="", demean_ind="", rm_nan=True, sep=" "):
     '''
     Writes output design matrix in addition to inclusion and exclusion lists
     for the given input file (which could be a TSV or CSV). The output design
@@ -396,6 +397,7 @@ def mk_design(in_file, prefix, rm_list="", ret_list="", kp_col_list="", rm_nan=T
         rm_list (file or string): File or comma separated strings of subjects to remove.
         ret_list (file or string): File or comma separated strings of subjects to retain.
         kp_col_list (file or string): File or comma separated strings of column indices to retain in design matrix (e.g. "1,2,3", index count starts at 0).
+        demean_ind (file or string): File or comma separated strings of column indices to demean (NOTE: column cannot contain non-numeric values)
         rm_nan (boolean): Remove subjects with NaNs in the specified covariates (from kp_col_list) from the design matrix.
         sep (string): Separator string to use, valid separators/delimitors include: "," and "\t".
     Returns:
@@ -413,19 +415,28 @@ def mk_design(in_file, prefix, rm_list="", ret_list="", kp_col_list="", rm_nan=T
     if len(ret_list) > 1:
         ret_list = parse_str_list(string=ret_list)
     if len(kp_col_list) > 1:
-        kp_col_list = parse_str_list(kp_col_list)
+        kp_col_list = parse_str_list(string=kp_col_list)
         kp_col_list = [int(i) for i in kp_col_list]
 
     # Create updated dataframe
     df_keep = subs_retain(df=df_init, subs_keep=ret_list)
     df_rm = rm_sub(df=df_keep, rm_list=rm_list)
-    df = keep_columns(df=df_rm, kp_list=kp_col_list, rm_nan=rm_nan)
+    df_cols = keep_columns(df=df_rm, kp_list=kp_col_list, rm_nan=rm_nan)
+
+    # Demean data if required
+    if len(demean_ind) > 1:
+        demean_ind = parse_str_list(string=demean_ind)
+        demean_ind = [int(i) for i in demean_ind]
+        df_demean = demean_col(df=df_cols, col_indices=demean_ind)
+        df = df_demean
+    else:
+        df = df_cols
 
     # Update inclusion and exclusion lists
     [rm_list, ret_list] = mk_adj_sub_list(df=df, rm_list=rm_list, keep_list=ret_list)
 
     # Write output files
-    out_mat = prefix + ".mat"
+    out_mat = prefix + ".txt"
     out_rm = prefix + ".exclude.txt"
     out_keep = prefix + ".include.txt"
 
