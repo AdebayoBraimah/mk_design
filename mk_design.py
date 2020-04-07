@@ -1,45 +1,46 @@
 #!/usr/bin/env python3
 
-# Define usage
-"""
-
-Creates FSL compatible design matrices (as text files). Writes corresponding
-inclusion and exclusion lists.
-
-Usage:
-
-  mk_design.py [options | expert options] [required arguments]
-
-Required arguments
-
-    -i,--in FILE        Input TSV of CSV group design file with headers. Input
-                        file must have a subject ID column as the first column header.
-    -o,--out PREFIX     Output prefix
-
-Options:
-
-    --rm-list STR       File or comma separated strings of subjects to remove.
-    --ret-list STR      File or comma separated strings of subjects to retain.
-    --ret-cols STR      File or comma separated strings of column indices to
-                        retain in design matrix (e.g. "1,2,3", index count starts at 0).
-
-Expert Options:
-
-    --keep-nan          Keeps subjects with NaNs (missing data) from the specified
-                        covariates (from '--ret-cols') in the design matrix [default: False]
-    --sep SEP           Separator string to use, valid separators/delimitors include: "," and "\t".
-
-    -h,--help           Prints help message, then exits.
-    --version           Prints version, then exits.
-
-"""
+# Define dococpt usage (not working at the moment)
+# '''
+#
+# Creates FSL compatible design matrices (as text files). Writes corresponding
+# inclusion and exclusion lists.
+#
+# Usage:
+#
+#   mk_design.py [options | expert options] [required arguments]
+#
+# Required arguments:
+#
+#     -i,--in FILE        Input TSV of CSV group design file with headers. Input
+#                         file must have a subject ID column as the first column header.
+#     -o,--out PREFIX     Output prefix
+#
+# Options:
+#
+#     --rm-list STR       File or comma separated strings of subjects to remove.
+#     --ret-list STR      File or comma separated strings of subjects to retain.
+#     --ret-cols STR      File or comma separated strings of column indices to
+#                         retain in design matrix (e.g. "1,2,3", index count starts at 0).
+#
+# Expert Options:
+#
+#     --keep-nan          Keeps subjects with NaNs (missing data) from the specified
+#                         covariates (from '--ret-cols') in the design matrix [default: False]
+#     --sep SEP           Separator string to use, valid separators/delimitors include: "," and "\t".
+#
+#     -h,--help           Prints help message, then exits.
+#     --version           Prints version, then exits.
+#
+# '''
 
 # Import packages/modules
 import pandas as pd
 import os
 
 # Import packages and modules for argument parsing
-from docopt import docopt
+# from docopt import docopt
+import argparse
 
 # Define functions
 
@@ -429,5 +430,99 @@ def mk_design(in_file, prefix, rm_list="", ret_list="", kp_col_list="", demean_i
 if __name__ == '__main__':
 
     # Parse arguments
-    args = docopt(__doc__, help=True, version='mk_design.py v0.0.1', options_first=False)
+    parser = argparse.ArgumentParser(description='Creates FSL compatible design matrices (as text files). Writes corresponding inclusion and exclusion lists.')
+
+    # Parse Arguments
+    # Required Arguments
+    reqoptions = parser.add_argument_group('Required Argument(s)')
+    reqoptions.add_argument('-i','--in',
+                            type=str,
+                            dest="in_file",
+                            metavar="FILE",
+                            required=True,
+                            help="Input TSV of CSV group design file with headers. Input file must have a subject ID column as the first column header.")
+    reqoptions.add_argument('-o', '--out',
+                            type=str,
+                            dest="prefix",
+                            metavar="PREFIX",
+                            required=True,
+                            help="Output prefix")
+    # Optional Arguements
+    optoptions = parser.add_argument_group('Optional Argument(s)')
+    optoptions.add_argument('--rm-list',
+                            type=str,
+                            dest="rm_list",
+                            metavar="STR",
+                            required=False,
+                            default="",
+                            help="File or comma separated strings of subjects to remove.")
+    optoptions.add_argument('--ret-list',
+                            type=str,
+                            dest="ret_list",
+                            metavar="STR",
+                            required=False,
+                            default="",
+                            help="File or comma separated strings of subjects to retain.")
+    optoptions.add_argument('--ret-cols',
+                            type=str,
+                            dest="ret_cols",
+                            metavar="STR",
+                            required=False,
+                            default="",
+                            help="File or comma separated strings of column indices to retain in design matrix (e.g. \"1,2,3\", index count starts at 0).")
+    # Expert Options
+    expoptions = parser.add_argument_group('Expert Option(s)')
+    expoptions.add_argument('--keep-nan',
+                            dest="keep_nan",
+                            required=False,
+                            action="store_true",
+                            default=False,
+                            help="Keeps subjects with NaNs (missing data) from the specified covariates (from '--ret-cols') in the design matrix [default: False].")
+    expoptions.add_argument('--sep',
+                            type=str,
+                            dest="sep",
+                            required=False,
+                            metavar="SEP",
+                            default=" ",
+                            help = "Separator string to use, valid separators/delimitors include: tabs, commas, or spaces).")
+
+    args = parser.parse_args()
+
+    # Print help message in the case of no arguments
+    try:
+        args = parser.parse_args()
+    except SystemExit as err:
+        if err.code == 2:
+            parser.print_help()
+
+    if args.keep_nan:
+        rm_nan = False
+    else:
+        rm_nan = True
+
+    # if not args.sep:
+    #     sep = " "
+
+    mk_design(in_file=args.in_file, prefix=args.prefix, rm_list=args.rm_list, ret_list=args.ret_list, kp_col_list=args.ret_cols, demean_ind="", rm_nan=rm_nan, sep=args.sep)
+
+    # # Parse arguments
+    # args = docopt(__doc__, help=True, version='mk_design.py v0.0.1', options_first=False)
     # print(args)
+    #
+    # # Check for required arguments
+    # if not args['--in'] and not args['--out']:
+    #     print("")
+    #     print("Usage:   mk_design.py --in FILE --out PREFIX   |   -h,-help,--help")
+    #     print("")
+    #     print("Please see help menu for details.")
+    #     print("")
+    #
+    # if args['--keep-nan']:
+    #     rm_nan=False
+    # else:
+    #     rm_nan=True
+    #
+    # if not args['--sep']:
+    #     args['--sep'] = " "
+    #
+    # mk_design(in_file=args['--in'],prefix=args['--out'], rm_list=args['--rm-list'],ret_list=args['--ret-list'], kp_col_list=args['--ret-cols'], demean_ind="", rm_nan=rm_nan, sep=args['--sep'])

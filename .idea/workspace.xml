@@ -16,10 +16,10 @@
       <file leaf-file-name="mk_design.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/mk_design.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="510">
-              <caret line="32" column="51" selection-start-line="32" selection-start-column="51" selection-end-line="32" selection-end-column="51" />
+            <state relative-caret-position="357">
+              <caret line="497" column="21" lean-forward="true" selection-start-line="497" selection-start-column="21" selection-end-line="497" selection-end-column="21" />
               <folding>
-                <element signature="e#3762#3781#0" expanded="true" />
+                <element signature="e#1310#1329#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -68,6 +68,11 @@
               <item name="mk_design" type="b2602c69:ProjectViewProjectNode" />
               <item name="mk_design" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="mk_design" type="b2602c69:ProjectViewProjectNode" />
+              <item name="mk_design" type="462c0819:PsiDirectoryNode" />
+              <item name="proto.jpy" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -104,6 +109,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="976" height="1056" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.3657205" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -132,10 +138,10 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/mk_design.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="32" column="51" selection-start-line="32" selection-start-column="51" selection-end-line="32" selection-end-column="51" />
+        <state relative-caret-position="357">
+          <caret line="497" column="21" lean-forward="true" selection-start-line="497" selection-start-column="21" selection-end-line="497" selection-end-column="21" />
           <folding>
-            <element signature="e#3762#3781#0" expanded="true" />
+            <element signature="e#1310#1329#0" expanded="true" />
           </folding>
         </state>
       </provider>
