@@ -16,8 +16,8 @@
       <file leaf-file-name="mk_design.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/mk_design.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="792">
-              <caret line="447" lean-forward="true" selection-start-line="421" selection-start-column="23" selection-end-line="447" />
+            <state relative-caret-position="510">
+              <caret line="32" column="51" selection-start-line="32" selection-start-column="51" selection-end-line="32" selection-end-column="51" />
               <folding>
                 <element signature="e#3762#3781#0" expanded="true" />
               </folding>
@@ -104,7 +104,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="976" height="1056" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.3657205" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -115,7 +114,7 @@
       <window_info anchor="bottom" id="Version Control" />
       <window_info anchor="bottom" id="Python Console" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Terminal" />
+      <window_info anchor="bottom" id="Terminal" visible="true" weight="0.32897604" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info id="Favorites" side_tool="true" />
       <window_info anchor="bottom" id="Find" order="1" />
@@ -133,8 +132,8 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/mk_design.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="792">
-          <caret line="447" lean-forward="true" selection-start-line="421" selection-start-column="23" selection-end-line="447" />
+        <state relative-caret-position="510">
+          <caret line="32" column="51" selection-start-line="32" selection-start-column="51" selection-end-line="32" selection-end-column="51" />
           <folding>
             <element signature="e#3762#3781#0" expanded="true" />
           </folding>

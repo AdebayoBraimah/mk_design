@@ -3,54 +3,34 @@
 # Define usage
 """
 
-Creates FSL compatible design matrices (as text files).
+Creates FSL compatible design matrices (as text files). Writes corresponding
+inclusion and exclusion lists.
 
 Usage:
 
   mk_design.py [options | expert options] [required arguments]
 
 Required arguments
-    -i,--in INPUT       Input 4D file
-    -o,--out PREFIX     Output prefix for transformed 4D file
-    -r,--ref IMAGE      Reference image that corresponds to the transform(s) or
-                        target space to be resampled/interpolated to
+
+    -i,--in FILE        Input TSV of CSV group design file with headers. Input
+                        file must have a subject ID column as the first column header.
+    -o,--out PREFIX     Output prefix
+
 Options:
-    --ref-tar IMAGE     Reference (target) image to resample to post-transform
-                        (usually the native space image) - behaves best with
-                        linear transfroms.
-    -TR,--TR FLOAT      Repetition time (TR) of the input 4D EPI. If this value is not
-                        specified, it will then be read from the nifti header [default: infer]
-    -n,--num-jobs INT   Number of jobs to run in parallel. Default behavior is to use the
-                        max number of cores available [default: infer]
+
+    --rm-list STR       File or comma separated strings of subjects to remove.
+    --ret-list STR      File or comma separated strings of subjects to retain.
+    --ret-cols STR      File or comma separated strings of column indices to
+                        retain in design matrix (e.g. "1,2,3", index count starts at 0).
+
 Expert Options:
-    -d,--dim CMD        (Command) Dimension to split and concatenate along the 4D image
-                        (valid options: "-x", "-y", "-z", "t", "-tr") [default: -tr]
-    -w,--warp IMAGE     FSL-style non-linear warp field file to reference image
-    --warp-app CMD      (Command) Warp field treatment and application
-                        (valid options: "relative", "absolute") [default: "relative"]
-    --premat MAT        FSL-style pre-transform linear transformation matrix
-    --postmat MAT       FSL-style post-transform linear transformation matrix
-    --resamp-vox        Resample voxel-size to reference target image (if '--ref-tar' option is not
-                        used then image voxel-size is resampled back to native voxel-size)
-    --resamp-dim        Resample image dimension to reference target image (if '--ref-tar' option is not
-                        used then image dimensions are resampled back to native dimensions)
-    -m,--mask IMAGE     Binary mask image file in reference space to use for applying transform(s)
-    --interp CMD        Interpolation method, options include: "nn","trilinear","sinc","spline"
-    --padding-size INT  Extrapolates outside original volume by n voxels
-    --use-qform         Use s/qforms of ref_vol and nii_file images
-                        - NOTE: no other transorms can be applied with this option
-    --data-type CMD     Force output data type (valid options: "char" "short" "int" "float" "double")
-    --super-sampling    Intermediary supersampling of output. [default: False]
-    --super-level CMD   Level of intermediary supersampling, a for 'automatic' or integer level.
-                        Only used when '--super-sampling' option is enabled. [default: 2]
-    --no-parallel       Do not apply linear/non-linear transforms in parallel.
-                        NOT RECOMMENDED for 4D neuroimage EPIs greater than 300 frames (TRs) or
-                        for use with non-linear transforms as FSL's applywarp has to read the entire
-                        timeseries into memory.
-    -v,--verbose        Enable verbose output [default: False]
+
+    --keep-nan          Keeps subjects with NaNs (missing data) from the specified
+                        covariates (from '--ret-cols') in the design matrix [default: False]
+    --sep SEP           Separator string to use, valid separators/delimitors include: "," and "\t".
+
     -h,--help           Prints help message, then exits.
     --version           Prints version, then exits.
-NOTE: '--resamp-dim' and '--resamp-vox' options require MIRTK to be installed if these options are specified.
 
 """
 
