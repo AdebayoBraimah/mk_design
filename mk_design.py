@@ -425,6 +425,9 @@ def mk_design(in_file, prefix, rm_list="", ret_list="", kp_col_list="", demean_i
     out_rm = list_to_file(in_list=rm_list, out_file=out_rm)
     out_keep = list_to_file(in_list=ret_list, out_file=out_keep)
 
+    # Print out complete design with header information
+    df.to_csv(prefix + ".all_info.txt", sep=sep, header=True, index=False, na_rep="NaN", float_format='%.3f')
+
     return out_mat, out_rm, out_keep
 
 if __name__ == '__main__':
