@@ -31,5 +31,5 @@ Expert Option(s):
                         specified covariates (from '--ret-cols') in the design
                         matrix [default: False].
   --sep SEP             Separator string to use, valid separators/delimitors
-                        include: tabs, commas, or spaces).
+                        include: tabs, commas, or spaces.
  ```
