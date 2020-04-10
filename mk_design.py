@@ -206,7 +206,7 @@ def subs_retain(df, subs_keep=[]):
     return df_keep
 
 
-def mk_adj_sub_list(df, rm_list=[], keep_list=[]):
+def mk_adj_sub_list(df_all,df_subs,rm_list=[]):
     '''
     Creates an adjusted subject inclusion (keep_list) and exclusion (rm_list)
     lists using some input dataframe. The input rm_list is updated to
@@ -214,31 +214,35 @@ def mk_adj_sub_list(df, rm_list=[], keep_list=[]):
     manual exclusion or missing data.
 
     Arguments:
-        df (dataframe): Input dataframe.
-        rm_list (list): List of subjects to remove.
-        keep_list (list): List of subjects to retain.
+        df_all (dataframe): Input dataframe of all subjects.
+        df_subs (dataframe): Input dataframe.
     Returns:
         rm_list_adj (list): Adjusted rm_list that lists all excluded subjects.
         keep_list_adj (list): Adjusted keep_list that list all the included subjects.
     '''
-
-    # Create list from dataframe subject IDs
-    col_names = list(df.columns)
-    all_subs = df[col_names[0]].to_list()
-
+    
+    # Create list of column names
+    col_names = list(df_all.columns)
+    
+    # Create list from input dataframes subject IDs
+    all_subs = df_all[col_names[0]].to_list()
+    keep_subs = df_subs[col_names[0]].to_list()
+    
     # Create sets from lists
     all_subs_set = set(all_subs)
-    subs_keep_set = set(keep_list)
-    rm_list_set = set(rm_list)
+    subs_keep_set = set(keep_subs)
+    
+    # Create removed subject list set
+    rm_list_set = all_subs_set.difference(subs_keep_set)
 
-    if len(rm_list) != 0 and len(keep_list) != 0:
-        rm_list_set.update(all_subs_set.difference(subs_keep_set))
-    elif len(rm_list) != 0:
-        subs_keep_set.update(all_subs_set.difference(rm_list_set))
-        rm_list_set.update(all_subs_set.difference(subs_keep_set))
-
+    # Create updated/adjusted lists
     rm_list_adj = list(rm_list_set)
+    rm_list_adj.extend(rm_list)
     keep_list_adj = list(subs_keep_set)
+    
+    # Sort lists
+    rm_list_adj.sort()
+    keep_list_adj.sort()
 
     return rm_list_adj, keep_list_adj
 
@@ -390,12 +394,15 @@ def mk_design(in_file, prefix, rm_list="", ret_list="", kp_col_list="", demean_i
     # Create initial dataframe
     df_init = mk_df(in_file=in_file)
 
-    # Create input lists from input strings
-    if len(rm_list) > 1:
+    # Create input lists from input strings,
+    # use list comprehension to convert strings to integers
+    if len(rm_list) > 0:
         rm_list = parse_str_list(string=rm_list)
-    if len(ret_list) > 1:
+        rm_list = [int(i) for i in rm_list]
+    if len(ret_list) > 0:
         ret_list = parse_str_list(string=ret_list)
-    if len(kp_col_list) > 1:
+        ret_list = [int(i) for i in ret_list]
+    if len(kp_col_list) > 0:
         kp_col_list = parse_str_list(string=kp_col_list)
         kp_col_list = [int(i) for i in kp_col_list]
 
@@ -404,8 +411,8 @@ def mk_design(in_file, prefix, rm_list="", ret_list="", kp_col_list="", demean_i
     df_rm = rm_sub(df=df_keep, rm_list=rm_list)
     df_cols = keep_columns(df=df_rm, kp_list=kp_col_list, rm_nan=rm_nan)
 
-    # Demean data if required
-    if len(demean_ind) > 1:
+    # Demean data if required (does not work as expected)
+    if len(demean_ind) > 0:
         demean_ind = parse_str_list(string=demean_ind)
         demean_ind = [int(i) for i in demean_ind]
         df_demean = demean_col(df=df_cols, col_indices=demean_ind)
@@ -414,7 +421,7 @@ def mk_design(in_file, prefix, rm_list="", ret_list="", kp_col_list="", demean_i
         df = df_cols
 
     # Update inclusion and exclusion lists
-    [rm_list, ret_list] = mk_adj_sub_list(df=df, rm_list=rm_list, keep_list=ret_list)
+    [rm_list, ret_list] = mk_adj_sub_list(df_all=df_init,df_subs=df,rm_list=rm_list)
 
     # Write output files
     out_mat = prefix + ".txt"
