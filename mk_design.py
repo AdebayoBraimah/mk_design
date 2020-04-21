@@ -199,7 +199,7 @@ def subs_retain(df, subs_keep=[]):
 
     if len(subs_keep) != 0:
         for sub in subs_keep:
-            df_keep = df_keep.append(df.loc[df[col_names[0]] == sub], sort=True)
+            df_keep = df_keep.append(df.loc[df[col_names[0]] == sub], sort=False)
     else:
         df_keep = df
 
@@ -398,10 +398,10 @@ def mk_design(in_file, prefix, rm_list="", ret_list="", kp_col_list="", demean_i
     # use list comprehension to convert strings to integers
     if len(rm_list) > 0:
         rm_list = parse_str_list(string=rm_list)
-        rm_list = [int(i) for i in rm_list]
+        # rm_list = [int(i) for i in rm_list]
     if len(ret_list) > 0:
         ret_list = parse_str_list(string=ret_list)
-        ret_list = [int(i) for i in ret_list]
+        # ret_list = [int(i) for i in ret_list]
     if len(kp_col_list) > 0:
         kp_col_list = parse_str_list(string=kp_col_list)
         kp_col_list = [int(i) for i in kp_col_list]
