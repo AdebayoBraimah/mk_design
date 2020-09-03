@@ -390,9 +390,6 @@ def mk_design(in_file, prefix, rm_list="", ret_list="", kp_col_list="", demean_i
     else:
         df = df_cols
 
-    # Create updated dataframe
-    # df_cols = keep_columns(df=df, kp_list=kp_col_list, rm_nan=rm_nan)
-
     # Update inclusion and exclusion lists
     [rm_list, ret_list] = mk_adj_sub_list(df_all=df,df_subs=df_cols,rm_list=rm_list)
 
@@ -457,7 +454,8 @@ def main():
                             metavar="STR",
                             required=False,
                             default="",
-                            help="File or comma separated strings of column indices to retain in design matrix (e.g. \"1,2,3\", index count starts at 0).")
+                            help="File or comma separated strings of column indices to retain in design matrix (e.g. \"1,2,3\", index count starts at 0). \
+                                    NOTE: Use of this option changes the column indexing order for other column indexing options (e.g. '--demean').")
     # Expert Options
     expoptions = parser.add_argument_group('Expert Option(s)')
     expoptions.add_argument('--demean',
@@ -466,7 +464,10 @@ def main():
                             metavar="STR",
                             required=False,
                             default="",
-                            help="File or comma separated strings of column indices to demean in design matrix (e.g. \"1,2,3\", index count starts at 0). NOTE: column cannot contain non-numeric values.")
+                            help="File or comma separated strings of column indices to demean in design matrix (e.g. \"1,2,3\", index count starts at 0). \
+                                    NOTE: column cannot contain non-numeric values. \
+                                    NOTE: if the column order is specified in the '--ret-cols' option, then the column order specified here has to be consistent with what \
+                                    was specified when using the '--ret-cols' option.")
     expoptions.add_argument('--keep-nan',
                             dest="keep_nan",
                             required=False,
@@ -494,8 +495,6 @@ def main():
         rm_nan = False
     else:
         rm_nan = True
-
-    print(rm_nan)
 
     mk_design(in_file=args.in_file, prefix=args.prefix, rm_list=args.rm_list, ret_list=args.ret_list, kp_col_list=args.ret_cols, demean_ind=args.demean, rm_nan=rm_nan, sep=args.sep)
 
