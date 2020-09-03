@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
-
+'''
+Creates FSL compatible design matrices (as text files). Writes corresponding inclusion and exclusion lists in addition to a file called '.all_info.txt' for record keeping purposes.
+'''
 
 # Import packages/modules
 import pandas as pd
@@ -412,7 +414,7 @@ def main():
     '''
 
     # Parse arguments
-    parser = argparse.ArgumentParser(description='Creates FSL compatible design matrices (as text files). Writes corresponding inclusion and exclusion lists.')
+    parser = argparse.ArgumentParser(description='Creates FSL compatible design matrices (as text files). Writes corresponding inclusion and exclusion lists in addition to a file called \'.all_info.txt\' for record keeping purposes.')
 
     # Parse Arguments
     # Required Arguments
@@ -422,7 +424,7 @@ def main():
                             dest="in_file",
                             metavar="FILE",
                             required=True,
-                            help="Input TSV of CSV group design file with headers. Input file must have a subject ID column as the first column header.")
+                            help="Input TSV or CSV group design file with headers. Input file must have a subject ID column as the first column header.")
     reqoptions.add_argument('-o', '--out',
                             type=str,
                             dest="prefix",
