@@ -417,7 +417,7 @@ def main():
 
     # Parse arguments
     parser = argparse.ArgumentParser(description='Creates FSL compatible design matrices (as text files). Writes corresponding inclusion and exclusion lists in addition to a file called \'.all_info.txt\' for record keeping purposes.\
-                                                    NOTE: when the input of quoted comma separated strings are used, no spaces should be used.')
+                                                    NOTE: when the input of quoted comma separated strings are used, no spaces should be used (e.g. \"sub-001,sub-002,sub-003\").')
 
     # Parse Arguments
     # Required Arguments
@@ -427,7 +427,7 @@ def main():
                             dest="in_file",
                             metavar="FILE",
                             required=True,
-                            help="Input TSV or CSV group design file with headers. Input file must have a subject ID column as the first column header. NOTE: subject IDs should be prefixed with 'sub-' (e.g. sub-CXEGE001).")
+                            help="Input TSV or CSV group design file with headers. Input file must have a subject ID column as the first column header. NOTE: subject IDs should be prefixed with 'sub-' (e.g. sub-001).")
     reqoptions.add_argument('-o', '--out',
                             type=str,
                             dest="prefix",
@@ -442,7 +442,7 @@ def main():
                             metavar="STR",
                             required=False,
                             default="",
-                            help="File or comma separated strings of subjects to remove.")
+                            help="File or comma separated strings of subjects to remove (e.g. \"sub-CXEGE01\").")
     optoptions.add_argument('--ret-list',
                             type=str,
                             dest="ret_list",
