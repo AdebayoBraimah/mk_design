@@ -1,38 +1,6 @@
 #!/usr/bin/env python3
 
-# Define dococpt usage (not working at the moment)
-# '''
-#
-# Creates FSL compatible design matrices (as text files). Writes corresponding
-# inclusion and exclusion lists.
-#
-# Usage:
-#
-#   mk_design.py [options | expert options] [required arguments]
-#
-# Required arguments:
-#
-#     -i,--in FILE        Input TSV of CSV group design file with headers. Input
-#                         file must have a subject ID column as the first column header.
-#     -o,--out PREFIX     Output prefix
-#
-# Options:
-#
-#     --rm-list STR       File or comma separated strings of subjects to remove.
-#     --ret-list STR      File or comma separated strings of subjects to retain.
-#     --ret-cols STR      File or comma separated strings of column indices to
-#                         retain in design matrix (e.g. "1,2,3", index count starts at 0).
-#
-# Expert Options:
-#
-#     --keep-nan          Keeps subjects with NaNs (missing data) from the specified
-#                         covariates (from '--ret-cols') in the design matrix [default: False]
-#     --sep SEP           Separator string to use, valid separators/delimitors include: "," and "\t".
-#
-#     -h,--help           Prints help message, then exits.
-#     --version           Prints version, then exits.
-#
-# '''
+
 
 # Import packages/modules
 import pandas as pd
@@ -411,7 +379,7 @@ def mk_design(in_file, prefix, rm_list="", ret_list="", kp_col_list="", demean_i
     df_rm = rm_sub(df=df_keep, rm_list=rm_list)
     df_cols = keep_columns(df=df_rm, kp_list=kp_col_list, rm_nan=rm_nan)
 
-    # Demean data if required (does not work as expected)
+    # Demean data if required
     if len(demean_ind) > 0:
         demean_ind = parse_str_list(string=demean_ind)
         demean_ind = [int(i) for i in demean_ind]
@@ -437,7 +405,11 @@ def mk_design(in_file, prefix, rm_list="", ret_list="", kp_col_list="", demean_i
 
     return out_mat, out_rm, out_keep
 
-if __name__ == '__main__':
+def main():
+    '''
+    main function:
+    - Parses arguments
+    '''
 
     # Parse arguments
     parser = argparse.ArgumentParser(description='Creates FSL compatible design matrices (as text files). Writes corresponding inclusion and exclusion lists.')
@@ -488,7 +460,7 @@ if __name__ == '__main__':
                             metavar="STR",
                             required=False,
                             default="",
-                            help="File or comma separated strings of column indices to demean in design matrix (e.g. \"1,2,3\", index count starts at 0).")
+                            help="File or comma separated strings of column indices to demean in design matrix (e.g. \"1,2,3\", index count starts at 0). NOTE: column cannot contain non-numeric values.")
     expoptions.add_argument('--keep-nan',
                             dest="keep_nan",
                             required=False,
@@ -517,29 +489,7 @@ if __name__ == '__main__':
     else:
         rm_nan = True
 
-    # if not args.sep:
-    #     sep = " "
-
     mk_design(in_file=args.in_file, prefix=args.prefix, rm_list=args.rm_list, ret_list=args.ret_list, kp_col_list=args.ret_cols, demean_ind=args.demean, rm_nan=rm_nan, sep=args.sep)
 
-    # # Parse arguments
-    # args = docopt(__doc__, help=True, version='mk_design.py v0.0.1', options_first=False)
-    # print(args)
-    #
-    # # Check for required arguments
-    # if not args['--in'] and not args['--out']:
-    #     print("")
-    #     print("Usage:   mk_design.py --in FILE --out PREFIX   |   -h,-help,--help")
-    #     print("")
-    #     print("Please see help menu for details.")
-    #     print("")
-    #
-    # if args['--keep-nan']:
-    #     rm_nan=False
-    # else:
-    #     rm_nan=True
-    #
-    # if not args['--sep']:
-    #     args['--sep'] = " "
-    #
-    # mk_design(in_file=args['--in'],prefix=args['--out'], rm_list=args['--rm-list'],ret_list=args['--ret-list'], kp_col_list=args['--ret-cols'], demean_ind="", rm_nan=rm_nan, sep=args['--sep'])
+if __name__ == '__main__':
+    main()
