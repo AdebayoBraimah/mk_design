@@ -1,0 +1,32 @@
+
+Running test: grp_design
+True
+
+Running test: grp_design_no_ext_text
+/home/adebayo/anaconda3/lib/python3.7/site-packages/pandas/core/ops.py:1649: FutureWarning: elementwise comparison failed; returning scalar instead, but in the future will perform elementwise comparison
+  result = method(y)
+True
+
+Running test: grp_design_no_covs
+True
+
+Running test: grp_design_no_ext_text_no_covs
+/home/adebayo/anaconda3/lib/python3.7/site-packages/pandas/core/ops.py:1649: FutureWarning: elementwise comparison failed; returning scalar instead, but in the future will perform elementwise comparison
+  result = method(y)
+True
+
+Running test: grp_design_demean_age
+True
+
+Running test: grp_design_no_ext_text_demean_age
+/home/adebayo/anaconda3/lib/python3.7/site-packages/pandas/core/ops.py:1649: FutureWarning: elementwise comparison failed; returning scalar instead, but in the future will perform elementwise comparison
+  result = method(y)
+True
+
+Running test: grp_design_demean_multi-col
+True
+
+Running test: grp_design_no_ext_text_demean_multi-col
+/home/adebayo/anaconda3/lib/python3.7/site-packages/pandas/core/ops.py:1649: FutureWarning: elementwise comparison failed; returning scalar instead, but in the future will perform elementwise comparison
+  result = method(y)
+True

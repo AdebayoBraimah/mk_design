@@ -379,21 +379,22 @@ def mk_design(in_file, prefix, rm_list="", ret_list="", kp_col_list="", demean_i
     # Initialize dataframe
     df_keep = subs_retain(df=df_init, subs_keep=ret_list)
     df_rm = rm_sub(df=df_keep, rm_list=rm_list)
+    df_cols = keep_columns(df=df_rm, kp_list=kp_col_list, rm_nan=rm_nan)
 
     # Demean data if required
     if len(demean_ind) > 0:
         demean_ind = parse_str_list(string=demean_ind)
         demean_ind = [int(i) for i in demean_ind]
-        df_demean = demean_col(df=df_rm, col_indices=demean_ind)
+        df_demean = demean_col(df=df_cols, col_indices=demean_ind)
         df = df_demean
     else:
-        df = df_rm
+        df = df_cols
 
     # Create updated dataframe
-    df_cols = keep_columns(df=df, kp_list=kp_col_list, rm_nan=rm_nan)
+    # df_cols = keep_columns(df=df, kp_list=kp_col_list, rm_nan=rm_nan)
 
     # Update inclusion and exclusion lists
-    [rm_list, ret_list] = mk_adj_sub_list(df_all=df_init,df_subs=df_cols,rm_list=rm_list)
+    [rm_list, ret_list] = mk_adj_sub_list(df_all=df,df_subs=df_cols,rm_list=rm_list)
 
     # Write output files
     out_mat = prefix + ".txt"
@@ -493,6 +494,8 @@ def main():
         rm_nan = False
     else:
         rm_nan = True
+
+    print(rm_nan)
 
     mk_design(in_file=args.in_file, prefix=args.prefix, rm_list=args.rm_list, ret_list=args.ret_list, kp_col_list=args.ret_cols, demean_ind=args.demean, rm_nan=rm_nan, sep=args.sep)
 
