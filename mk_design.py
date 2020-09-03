@@ -379,21 +379,19 @@ def mk_design(in_file, prefix, rm_list="", ret_list="", kp_col_list="", demean_i
     # Initialize dataframe
     df_keep = subs_retain(df=df_init, subs_keep=ret_list)
     df_rm = rm_sub(df=df_keep, rm_list=rm_list)
+    df_cols = keep_columns(df=df_rm, kp_list=kp_col_list, rm_nan=rm_nan)
 
     # Demean data if required
     if len(demean_ind) > 0:
         demean_ind = parse_str_list(string=demean_ind)
         demean_ind = [int(i) for i in demean_ind]
-        df_demean = demean_col(df=df_rm, col_indices=demean_ind)
+        df_demean = demean_col(df=df_cols, col_indices=demean_ind)
         df = df_demean
     else:
-        df = df_rm
-
-    # Create updated dataframe
-    df_cols = keep_columns(df=df, kp_list=kp_col_list, rm_nan=rm_nan)
+        df = df_cols
 
     # Update inclusion and exclusion lists
-    [rm_list, ret_list] = mk_adj_sub_list(df_all=df_init,df_subs=df_cols,rm_list=rm_list)
+    [rm_list, ret_list] = mk_adj_sub_list(df_all=df,df_subs=df_cols,rm_list=rm_list)
 
     # Write output files
     out_mat = prefix + ".txt"
@@ -456,7 +454,8 @@ def main():
                             metavar="STR",
                             required=False,
                             default="",
-                            help="File or comma separated strings of column indices to retain in design matrix (e.g. \"1,2,3\", index count starts at 0).")
+                            help="File or comma separated strings of column indices to retain in design matrix (e.g. \"1,2,3\", index count starts at 0). \
+                                    NOTE: Use of this option changes the column indexing order for other column indexing options (e.g. '--demean').")
     # Expert Options
     expoptions = parser.add_argument_group('Expert Option(s)')
     expoptions.add_argument('--demean',
@@ -465,7 +464,10 @@ def main():
                             metavar="STR",
                             required=False,
                             default="",
-                            help="File or comma separated strings of column indices to demean in design matrix (e.g. \"1,2,3\", index count starts at 0). NOTE: column cannot contain non-numeric values.")
+                            help="File or comma separated strings of column indices to demean in design matrix (e.g. \"1,2,3\", index count starts at 0). \
+                                    NOTE: column cannot contain non-numeric values. \
+                                    NOTE: if the column order is specified in the '--ret-cols' option, then the column order specified here has to be consistent with what \
+                                    was specified when using the '--ret-cols' option.")
     expoptions.add_argument('--keep-nan',
                             dest="keep_nan",
                             required=False,
