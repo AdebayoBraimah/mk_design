@@ -376,22 +376,24 @@ def mk_design(in_file, prefix, rm_list="", ret_list="", kp_col_list="", demean_i
         kp_col_list = parse_str_list(string=kp_col_list)
         kp_col_list = [int(i) for i in kp_col_list]
 
-    # Create updated dataframe
+    # Initialize dataframe
     df_keep = subs_retain(df=df_init, subs_keep=ret_list)
     df_rm = rm_sub(df=df_keep, rm_list=rm_list)
-    df_cols = keep_columns(df=df_rm, kp_list=kp_col_list, rm_nan=rm_nan)
 
     # Demean data if required
     if len(demean_ind) > 0:
         demean_ind = parse_str_list(string=demean_ind)
         demean_ind = [int(i) for i in demean_ind]
-        df_demean = demean_col(df=df_cols, col_indices=demean_ind)
+        df_demean = demean_col(df=df_rm, col_indices=demean_ind)
         df = df_demean
     else:
-        df = df_cols
+        df = df_rm
+
+    # Create updated dataframe
+    df_cols = keep_columns(df=df, kp_list=kp_col_list, rm_nan=rm_nan)
 
     # Update inclusion and exclusion lists
-    [rm_list, ret_list] = mk_adj_sub_list(df_all=df_init,df_subs=df,rm_list=rm_list)
+    [rm_list, ret_list] = mk_adj_sub_list(df_all=df_init,df_subs=df_cols,rm_list=rm_list)
 
     # Write output files
     out_mat = prefix + ".txt"
@@ -414,7 +416,8 @@ def main():
     '''
 
     # Parse arguments
-    parser = argparse.ArgumentParser(description='Creates FSL compatible design matrices (as text files). Writes corresponding inclusion and exclusion lists in addition to a file called \'.all_info.txt\' for record keeping purposes.')
+    parser = argparse.ArgumentParser(description='Creates FSL compatible design matrices (as text files). Writes corresponding inclusion and exclusion lists in addition to a file called \'.all_info.txt\' for record keeping purposes.\
+                                                    NOTE: when the input of quoted comma separated strings are used, no spaces should be used (e.g. \"sub-001,sub-002,sub-003\").')
 
     # Parse Arguments
     # Required Arguments
@@ -424,7 +427,7 @@ def main():
                             dest="in_file",
                             metavar="FILE",
                             required=True,
-                            help="Input TSV or CSV group design file with headers. Input file must have a subject ID column as the first column header.")
+                            help="Input TSV or CSV group design file with headers. Input file must have a subject ID column as the first column header. NOTE: subject IDs should be prefixed with 'sub-' (e.g. sub-001).")
     reqoptions.add_argument('-o', '--out',
                             type=str,
                             dest="prefix",
@@ -439,7 +442,7 @@ def main():
                             metavar="STR",
                             required=False,
                             default="",
-                            help="File or comma separated strings of subjects to remove.")
+                            help="File or comma separated strings of subjects to remove (e.g. \"sub-CXEGE01\").")
     optoptions.add_argument('--ret-list',
                             type=str,
                             dest="ret_list",
