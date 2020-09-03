@@ -391,7 +391,7 @@ def mk_design(in_file, prefix, rm_list="", ret_list="", kp_col_list="", demean_i
         df = df_cols
 
     # Update inclusion and exclusion lists
-    [rm_list, ret_list] = mk_adj_sub_list(df_all=df,df_subs=df_cols,rm_list=rm_list)
+    [rm_list, ret_list] = mk_adj_sub_list(df_all=df_init,df_subs=df_cols,rm_list=rm_list)
 
     # Write output files
     out_mat = prefix + ".txt"
