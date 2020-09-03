@@ -482,6 +482,13 @@ if __name__ == '__main__':
                             help="File or comma separated strings of column indices to retain in design matrix (e.g. \"1,2,3\", index count starts at 0).")
     # Expert Options
     expoptions = parser.add_argument_group('Expert Option(s)')
+    expoptions.add_argument('--demean',
+                            type=str,
+                            dest="demean",
+                            metavar="STR",
+                            required=False,
+                            default="",
+                            help="File or comma separated strings of column indices to demean in design matrix (e.g. \"1,2,3\", index count starts at 0).")
     expoptions.add_argument('--keep-nan',
                             dest="keep_nan",
                             required=False,
@@ -494,7 +501,7 @@ if __name__ == '__main__':
                             required=False,
                             metavar="SEP",
                             default=" ",
-                            help = "Separator string to use, valid separators/delimitors include: tabs, commas, or spaces).")
+                            help = "Separator string to use, valid separators/delimitors include: tabs, commas, or spaces) [default: space].")
 
     args = parser.parse_args()
 
@@ -513,7 +520,7 @@ if __name__ == '__main__':
     # if not args.sep:
     #     sep = " "
 
-    mk_design(in_file=args.in_file, prefix=args.prefix, rm_list=args.rm_list, ret_list=args.ret_list, kp_col_list=args.ret_cols, demean_ind="", rm_nan=rm_nan, sep=args.sep)
+    mk_design(in_file=args.in_file, prefix=args.prefix, rm_list=args.rm_list, ret_list=args.ret_list, kp_col_list=args.ret_cols, demean_ind=args.demean, rm_nan=rm_nan, sep=args.sep)
 
     # # Parse arguments
     # args = docopt(__doc__, help=True, version='mk_design.py v0.0.1', options_first=False)
