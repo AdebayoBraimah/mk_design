@@ -21,6 +21,10 @@ jobs:
           command: python -c "print(\"Some test information\")"
           # command: ./manage.py
           name: Test
+      - store_test_results:
+          path: test-reports
+      - store_artifacts:
+          path: test-reports
 
 workflows:
   main:
