@@ -12,8 +12,11 @@ jobs:
     steps:
       - checkout
       # - python/load-cache
-      - python/install-deps
+      # - python/install-deps
       # - python/save-cache
+      - run:
+          command: python -m pip install requirements.txt
+          name: Install-deps
       - run:
           command: python -c "print(\"Some test information\")"
           # command: ./manage.py
