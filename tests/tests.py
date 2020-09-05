@@ -208,6 +208,7 @@ def directory_file_lists(bench_dir,test_dir):
     test_list = glob.glob(os.path.join(out_dir,"*grp*/*"),recursive=False)
     return [bench_list,test_list]
 
+@pytest.fixture
 def design_matrices_test(out_dir,bench_dir="benchmark"):
     '''
     Tests if design files in each directory are the same
