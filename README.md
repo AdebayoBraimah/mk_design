@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/AdebayoBraimah/mk_design.svg?style=shield)](https://app.circleci.com/pipelines/github/AdebayoBraimah/mk_design)
+
 # mk_design
 
 Handy tool to quickly and efficient create design matrices that are compatible with `FSL` style for group stats.
