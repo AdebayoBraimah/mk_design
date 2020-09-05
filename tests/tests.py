@@ -242,9 +242,9 @@ def design_matrices_test(out_dir,bench_dir="benchmark"):
             tmp_list = [f2]
             files.append(tmp_list)
     
-    # Clean-up
-    os.remove("test.log")
-    shutil.rmtree(out_dir)
+    # Clean-up (local)
+    # os.remove("test.log")
+    # shutil.rmtree(out_dir)
     
     if len(files) > 0:
         print("Test failure. Output design matrices appear to be different")
