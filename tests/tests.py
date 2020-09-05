@@ -214,6 +214,20 @@ def design_matrices_test(out_dir,bench_dir="benchmark"):
         print("")
         print("Non-zero error code writing test matrices")
         sys.exit(18)
+
+    if not os.path.exists(out_dir):
+        print("")
+        print("Output test design matrix directories do not exist")
+        sys.exit(65)
+    else:
+        out_dir = os.path.abspath(out_dir)
+
+    if not os.path.exists(bench_dir):
+        print("")
+        print("Benchmark design matrix directories do not exist")
+        sys.exit(65)
+    else:
+        bench_dir = os.path.abspath(bench_dir)
     
     [bench_files,test_files] = directory_file_lists("benchmark",out_dir)
     
@@ -236,7 +250,7 @@ def design_matrices_test(out_dir,bench_dir="benchmark"):
         return True
 
 def test_passed(out_dir):
-    assert design_matrices_test("benchmark",out_dir)
+    assert design_matrices_test(out_dir,"benchmark")
 
 if __name__ == "__main__":
     out_dir = "test.results"
