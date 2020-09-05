@@ -199,7 +199,7 @@ def compare_file(file1,file2):
             f1.close(); f2.close()
     return lines
 
-def directory_file_lists(bench_dir,test_dir):
+def directory_file_lists(bench_dir,out_dir):
     '''
     Inputs are top-level parent directories
     '''
@@ -208,7 +208,6 @@ def directory_file_lists(bench_dir,test_dir):
     test_list = glob.glob(os.path.join(out_dir,"*grp*/*"),recursive=False)
     return [bench_list,test_list]
 
-@pytest.fixture
 def design_matrices_test(out_dir,bench_dir="benchmark"):
     '''
     Tests if design files in each directory are the same
@@ -243,8 +242,8 @@ def design_matrices_test(out_dir,bench_dir="benchmark"):
             files.append(tmp_list)
     
     # Clean-up (local)
-    # os.remove("test.log")
-    # shutil.rmtree(out_dir)
+    os.remove("test.log")
+    shutil.rmtree(out_dir)
     
     if len(files) > 0:
         print("Test failure. Output design matrices appear to be different")
@@ -253,9 +252,9 @@ def design_matrices_test(out_dir,bench_dir="benchmark"):
         print("Tests passed.")
         return True
 
-def test_passed(out_dir):
-    assert design_matrices_test(out_dir,"benchmark")
+tmpdir = "test.results"
+result = design_matrices_test(tmpdir,"benchmark")
 
-if __name__ == "__main__":
-    out_dir = "test.results"
-    test_passed(out_dir)
+def test_passed(tmpdir):
+    assert result == True
+
