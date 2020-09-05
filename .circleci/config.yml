@@ -15,7 +15,7 @@ jobs:
       # - python/install-deps
       # - python/save-cache
       - run:
-          command: python -m pip install requirements.txt
+          command: python -m pip install -r requirements.txt
           name: Install-deps
       - run:
           command: python -c "print(\"Some test information\")"
