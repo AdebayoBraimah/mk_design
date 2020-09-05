@@ -7,16 +7,20 @@ parent_out_dir=${1}
 scripts_dir=$(dirname $(realpath ${0}))
 # parent_out_dir=${scripts_dir}/tests.results
 
+cwd=$(pwd)
+
+# cd ${scripts_dir}
+
 # File variables
 mk_design=${scripts_dir}/../mk_design.py
 log=${scripts_dir}/test.log
 err=${scripts_dir}/test.err
 
 # Arrays
-template_designs=( benchmark/design.test.csv
-  benchmark/design.test.csv
-  benchmark/design.test.csv
-  benchmark/design.test.csv )
+template_designs=( ${scripts_dir}/benchmark/design.test.csv
+  ${scripts_dir}/benchmark/design.test.csv
+  ${scripts_dir}/benchmark/design.test.csv
+  ${scripts_dir}/benchmark/design.test.csv )
 
 out_dirs=( grp_design
   grp_design_no_covs

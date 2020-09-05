@@ -12,6 +12,9 @@ import glob
 # Define global variables
 scripts_dir = os.path.dirname(os.path.realpath(__file__))
 
+# Change to working directory
+os.chdir(scripts_dir)
+
 # Define class(es)
 class Command(object):
     '''
