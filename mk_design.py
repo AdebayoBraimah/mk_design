@@ -270,7 +270,7 @@ def parse_str_list(string):
 
     delim = find_delim(in_file=string)
     in_list = string.split(sep=delim)
-    in_list.sort()
+    # in_list.sort()
 
     if len(in_list) == 1:
         if os.path.exists(string):
