@@ -186,6 +186,7 @@ def mk_adj_sub_list(df_all,df_subs,rm_list=[]):
     Arguments:
         df_all (dataframe): Input dataframe of all subjects.
         df_subs (dataframe): Input dataframe.
+        rm_list (list): Input list of removed subjects to be updated.
     Returns:
         rm_list_adj (list): Adjusted rm_list that lists all excluded subjects.
         keep_list_adj (list): Adjusted keep_list that list all the included subjects.
@@ -270,7 +271,7 @@ def parse_str_list(string):
 
     delim = find_delim(in_file=string)
     in_list = string.split(sep=delim)
-    # in_list.sort()
+    in_list.sort()
 
     if len(in_list) == 1:
         if os.path.exists(string):
@@ -368,13 +369,14 @@ def mk_design(in_file, prefix, rm_list="", ret_list="", kp_col_list="", demean_i
     # use list comprehension to convert strings to integers
     if len(rm_list) > 0:
         rm_list = parse_str_list(string=rm_list)
-        # rm_list = [int(i) for i in rm_list]
+        rm_list.sort()
     if len(ret_list) > 0:
         ret_list = parse_str_list(string=ret_list)
-        # ret_list = [int(i) for i in ret_list]
+        ret_list.sort()
     if len(kp_col_list) > 0:
         kp_col_list = parse_str_list(string=kp_col_list)
         kp_col_list = [int(i) for i in kp_col_list]
+        kp_col_list.sort()
 
     # Initialize dataframe
     df_keep = subs_retain(df=df_init, subs_keep=ret_list)
