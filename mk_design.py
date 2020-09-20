@@ -315,6 +315,32 @@ def write_design(df, out_file, sep=" "):
     return out_file
 
 
+def new_list_index(df_1,df_2,num_ind):
+    '''
+    Constructs new list of dataframe column indices given a list of current indices
+    for some input dataframe, and another dataframe with fewer columns with the same 
+    headers/name
+    
+    Arguments:
+        df_1 (df): Input dataframe with column header/name 
+        df_2 (df): Input dataframe with fewer columns than df_1, but with columns of the same name
+        num_ind (list): List of column numbers/indices to be included in the new list of indices.
+    Returns:
+        col_ind (list): List of column numbers/indices that correspond to df_2.
+    '''
+    # Column indices list
+    col_ind = []
+    
+    # Create column list
+    col_names_1 = list(df_1.columns)
+    col_names_2 = list(df_2.columns)
+    
+    for i in num_ind:
+        idx = col_names_1[i]
+        col_ind.append(col_names_2.index(idx))
+    return col_ind
+
+
 def demean_col(df, col_indices=[]):
     '''
     Demeans column indices of a dataframe. NOTE: The column or columns
@@ -365,8 +391,7 @@ def mk_design(in_file, prefix, rm_list="", ret_list="", kp_col_list="", demean_i
     # Create initial dataframe
     df_init = mk_df(in_file=in_file)
 
-    # Create input lists from input strings,
-    # use list comprehension to convert strings to integers
+    # Create input lists from input strings
     if len(rm_list) > 0:
         rm_list = parse_str_list(string=rm_list)
         rm_list.sort()
@@ -387,6 +412,7 @@ def mk_design(in_file, prefix, rm_list="", ret_list="", kp_col_list="", demean_i
     if len(demean_ind) > 0:
         demean_ind = parse_str_list(string=demean_ind)
         demean_ind = [int(i) for i in demean_ind]
+        demean_ind = new_list_index(df_1=df_init, df_2=df_cols, num_ind=demean_ind)
         df_demean = demean_col(df=df_cols, col_indices=demean_ind)
         df = df_demean
     else:
