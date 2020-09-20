@@ -482,8 +482,7 @@ def main():
                             metavar="STR",
                             required=False,
                             default="",
-                            help="File or comma separated strings of column indices to retain in design matrix (e.g. \"1,2,3\", index count starts at 0). \
-                                    NOTE: Use of this option changes the column indexing order for other column indexing options (e.g. '--demean').")
+                            help="File or comma separated strings of column indices to retain in design matrix (e.g. \"1,2,3\", index count starts at 0).")
     # Expert Options
     expoptions = parser.add_argument_group('Expert Option(s)')
     expoptions.add_argument('--demean',
