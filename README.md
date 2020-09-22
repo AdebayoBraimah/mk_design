@@ -4,7 +4,7 @@
 
 Handy tool to quickly and efficient create design matrices that are compatible with `FSL` style for group stats.
 
-Additionally, [here](https://genomicsclass.github.io/book/pages/expressing_design_formula.html) is a quick introduction general linear models and constructing design matrices
+Additionally, [here](https://genomicsclass.github.io/book/pages/expressing_design_formula.html) is a quick introduction to general linear models and constructing design matrices
 
 ```
 usage: mk_design.py [-h] -i FILE -o PREFIX [--rm-list STR] [--ret-list STR]
