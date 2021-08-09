@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-
-'''
+# -*- coding: utf-8 -*-
+"""
 Creates FSL compatible design matrices (as text files). Writes corresponding inclusion and exclusion lists in addition to a file called '.all_info.txt' for record keeping purposes.
-'''
+"""
 
 # Import packages/modules
 import pandas as pd
@@ -15,7 +15,7 @@ import argparse
 # Define functions
 
 def find_delim(in_file, verbose=False):
-    '''
+    """
     Inspects input file or string for some known delimiter (e.g. ',','\t' etc.)
     and returns the returns the delimiter used to separate enteries in the
     input file or string.
@@ -25,7 +25,7 @@ def find_delim(in_file, verbose=False):
         verbose (boolean): Enable verbose output
     Returns:
         delim (string): The delmiter used in the input file or string.
-    '''
+    """
 
     if os.path.exists(in_file):
         with open(in_file, 'r') as file:
@@ -73,7 +73,7 @@ def find_delim(in_file, verbose=False):
 
 
 def mk_df(in_file, verbose=False):
-    '''
+    """
     Creates a (pandas) dataframe from an input file.
 
     Arguments:
@@ -81,7 +81,7 @@ def mk_df(in_file, verbose=False):
         verbose (boolean): Enable verbose output
     Returns:
         df (dataframe): Output dataframe
-    '''
+    """
 
     delim = find_delim(in_file=in_file, verbose=verbose)
     df = pd.read_csv(in_file, sep=delim)
@@ -93,7 +93,7 @@ def mk_df(in_file, verbose=False):
 
 
 def rm_sub(df, rm_list):
-    '''
+    """
     Removes a list of subjects from some dataframe. Note that this
     change is done in-place.
 
@@ -102,7 +102,7 @@ def rm_sub(df, rm_list):
         rm_list (list): List of subjects to remove from dataframe
     Returns:
         df (dataframe): Output dataframe with subjects in list removed
-    '''
+    """
 
     col_names = list(df.columns)
 
@@ -114,7 +114,7 @@ def rm_sub(df, rm_list):
 
 
 def keep_columns(df, kp_list=[], rm_nan=True):
-    '''
+    """
     Creates an output dataframe that contains only the specified column
     indices (e.g. numerical index starting at 0 and not the column names).
     The output dataframe will also drop subjects that contain NaNs for all
@@ -126,7 +126,7 @@ def keep_columns(df, kp_list=[], rm_nan=True):
         rm_nan (boolean): Drops subjects that contain NaNs
     Returns:
         df_2 (dataframe): Output dataframe with only the selected columns remaining.
-    '''
+    """
 
     # Create column list
     col_names = list(df.columns)
@@ -154,7 +154,7 @@ def keep_columns(df, kp_list=[], rm_nan=True):
 
 
 def subs_retain(df, subs_keep=[]):
-    '''
+    """
     Creates a copy of dataframe that only includes a list of subjects.
 
     Arguments:
@@ -162,7 +162,7 @@ def subs_retain(df, subs_keep=[]):
         subs_keep (list): List of subjects to create the dataframe from
     Returns:
         df_keep (dataframe): Output dataframe with subjects in list
-    '''
+    """
 
     col_names = list(df.columns)
     df_keep = pd.DataFrame({col_names[0]: []})
@@ -177,7 +177,7 @@ def subs_retain(df, subs_keep=[]):
 
 
 def mk_adj_sub_list(df_all,df_subs,rm_list=[]):
-    '''
+    """
     Creates an adjusted subject inclusion (keep_list) and exclusion (rm_list)
     lists using some input dataframe. The input rm_list is updated to
     reflect subjects removed from the design matrix as a result of
@@ -190,7 +190,7 @@ def mk_adj_sub_list(df_all,df_subs,rm_list=[]):
     Returns:
         rm_list_adj (list): Adjusted rm_list that lists all excluded subjects.
         keep_list_adj (list): Adjusted keep_list that list all the included subjects.
-    '''
+    """
     
     # Create list of column names
     col_names = list(df_all.columns)
@@ -219,7 +219,7 @@ def mk_adj_sub_list(df_all,df_subs,rm_list=[]):
 
 
 def list_to_file(in_list, out_file):
-    '''
+    """
     Writes some input list to some file.
 
     Arguments:
@@ -227,7 +227,7 @@ def list_to_file(in_list, out_file):
         out_file (file): Output filename.
     Returns:
         out_file (file): Output file.
-    '''
+    """
 
     # Write list to file
     with open(out_file, "w") as f:
@@ -239,7 +239,7 @@ def list_to_file(in_list, out_file):
 
 
 def file_to_list(file):
-    '''
+    """
     Reads a file into a list, assuming the file is separated by newline
     characters.
 
@@ -247,7 +247,7 @@ def file_to_list(file):
         file (file): Input file to be read.
     Returns:
         lines (list): List from input file.
-    '''
+    """
 
     # Read file into list
     with open(file, "r") as f:
@@ -260,14 +260,14 @@ def file_to_list(file):
 
 
 def parse_str_list(string):
-    '''
+    """
     Parses a file or string into a list.
 
     Arguments:
         string (file or string): Input file or string to be read.
     Returns:
         sub_list (list): List of subjects from file or string.
-    '''
+    """
 
     delim = find_delim(in_file=string)
     in_list = string.split(sep=delim)
@@ -285,7 +285,7 @@ def parse_str_list(string):
 
 
 def write_design(df, out_file, sep=" "):
-    '''
+    """
     Writes an output design matrix from an input dataframe. Output
     values for floats will be written with three decimal places of
     floating point precision.
@@ -296,7 +296,7 @@ def write_design(df, out_file, sep=" "):
         sep (string): Separator
     Returns:
         out_file (file): Output design
-    '''
+    """
 
     # Create column list
     col_names = list(df.columns)
@@ -316,7 +316,7 @@ def write_design(df, out_file, sep=" "):
 
 
 def new_list_index(df_1,df_2,num_ind):
-    '''
+    """
     Constructs new list of dataframe column indices given a list of current indices
     for some input dataframe, and another dataframe with fewer columns with the same 
     headers/name
@@ -327,7 +327,7 @@ def new_list_index(df_1,df_2,num_ind):
         num_ind (list): List of column numbers/indices to be included in the new list of indices.
     Returns:
         col_ind (list): List of column numbers/indices that correspond to df_2.
-    '''
+    """
     # Column indices list
     col_ind = []
     
@@ -342,7 +342,7 @@ def new_list_index(df_1,df_2,num_ind):
 
 
 def demean_col(df, col_indices=[]):
-    '''
+    """
     Demeans column indices of a dataframe. NOTE: The column or columns
     can only contain numeric values. Non-numeric values will cause
     errors, and exceptions to be thrown.
@@ -352,7 +352,7 @@ def demean_col(df, col_indices=[]):
         col_indices (list): List of column numerical indices to demean
     Returns
         df_demean (dataframe): Output dataframe with demeaned columns from the input list
-    '''
+    """
 
     # Create column list
     col_names = list(df.columns)
@@ -367,7 +367,7 @@ def demean_col(df, col_indices=[]):
 
 
 def mk_design(in_file, prefix, rm_list="", ret_list="", kp_col_list="", demean_ind="", rm_nan=True, sep=" "):
-    '''
+    """
     Writes output design matrix in addition to inclusion and exclusion lists
     for the given input file (which could be a TSV or CSV). The output design
     matrix is written without headers, row indices, and subject IDs. The input
@@ -386,7 +386,7 @@ def mk_design(in_file, prefix, rm_list="", ret_list="", kp_col_list="", demean_i
         out_mat (file): Output design matrix
         out_rm (file): Subject exclusion file
         out_keep (file): Subject inclusion file
-    '''
+    """
 
     # Create initial dataframe
     df_init = mk_df(in_file=in_file)
@@ -436,10 +436,10 @@ def mk_design(in_file, prefix, rm_list="", ret_list="", kp_col_list="", demean_i
     return out_mat, out_rm, out_keep
 
 def main():
-    '''
+    """
     main function:
     - Parses arguments
-    '''
+    """
 
     # Parse arguments
     parser = argparse.ArgumentParser(description='Creates FSL compatible design matrices (as text files). Writes corresponding inclusion and exclusion lists in addition to a file called \'.all_info.txt\' for record keeping purposes.\

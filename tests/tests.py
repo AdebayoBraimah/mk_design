@@ -17,7 +17,7 @@ os.chdir(scripts_dir)
 
 # Define class(es)
 class Command(object):
-    '''
+    """
     Creates a command and an empty command list for UNIX command line programs/applications. Primary use and
     use-cases are intended for the subprocess module and its associated classes (i.e. Popen/call/run).
     
@@ -29,10 +29,10 @@ class Command(object):
         - os
         - logging
         - subprocess
-    '''
+    """
 
     def __init__(self,command):
-        '''
+        """
         Init doc-string for Command class. Initializes a command to be used on UNIX command line.
         The input argument is a command (string), and a mutable list is returned (, that can later
         be appended to).
@@ -46,12 +46,12 @@ class Command(object):
             command (string): Command to be used. Note: command used must be in system path
         Returns:
             cmd_list (list): Mutable list that can be appended to.
-        '''
+        """
         self.command = command
         self.cmd_list = [f"{self.command}"]
         
     def log(self,log_file="log_file.log",log_cmd=""):
-        '''
+        """
         Log function for logging commands and messages to some log file.
         
         Usage:
@@ -70,7 +70,7 @@ class Command(object):
         Arguments:
             log_file(file): Log file to be written to. 
             log_cmd(str): Message to be written to log file
-        '''
+        """
         
         # Set-up logging to file
         logging.basicConfig(level=logging.INFO,
@@ -93,7 +93,7 @@ class Command(object):
         logger.info(f"{log_cmd}")
         
     def run(self,log_file="log_file.log",debug=False,dryrun=False,env=None,stdout="",shell=False):
-        '''
+        """
         Uses python's built-in subprocess class to execute (run) a command from an input command list.
         The standard output and error can optionally be written to file.
         
@@ -116,7 +116,7 @@ class Command(object):
             log_file(file): Output log file with appended information should the 'log_file' option be used.
             stdout(file): Standard output writtent to file should the 'stdout' option be used.
             stderr(file): Standard error writtent to file should the 'stdout' option be used.
-        '''
+        """
         
         # Define logging
         logger = logging.getLogger(__name__)
@@ -175,21 +175,21 @@ class Command(object):
 
 # Writes functions
 def write_design_files(out_dir):
-    '''
+    """
     Wrapper function for `test.design.sh` script
     NOTE: scripts_dir is assumed to be a global variable
-    '''
+    """
     test = Command(os.path.join(scripts_dir,"test.design.sh"))
     test.cmd_list.append(out_dir)
     [returncode,log_file,stdout,stderr] = test.run(log_file="log_file.log",shell=False)
     return returncode,log_file,stdout,stderr
 
 def compare_file(file1,file2):
-    '''
+    """
     Compares two different files line-by-line
     NOTE: The second file (file2) is the file in which differences 
         should be identified.
-    '''
+    """
     lines = []
     with open(file1,'r') as f1:
         with open(file2,'r') as f2:
@@ -200,18 +200,18 @@ def compare_file(file1,file2):
     return lines
 
 def directory_file_lists(bench_dir,out_dir):
-    '''
+    """
     Inputs are top-level parent directories
-    '''
+    """
     
     bench_list = glob.glob(os.path.join(bench_dir,"*grp*/*"),recursive=False)
     test_list = glob.glob(os.path.join(out_dir,"*grp*/*"),recursive=False)
     return [bench_list,test_list]
 
 def design_matrices_test(out_dir,bench_dir="benchmark"):
-    '''
+    """
     Tests if design files in each directory are the same
-    '''
+    """
     [returncode,log_file,stdout,stderr] = write_design_files(out_dir)
     if returncode != 0:
         print("")
